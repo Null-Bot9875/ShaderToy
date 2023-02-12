@@ -1,12 +1,15 @@
 /*
     许愿：
-    1、下雨的窗:
-        ref:https://www.youtube.com/watch?v=EBrAdahFtuo
-            https://www.youtube.com/watch?v=0flY11lVCwY&t=1s
-    2、草海，碰撞，燃烧
+        1、下雨的窗:
+            ref:https://www.youtube.com/watch?v=EBrAdahFtuo
+                https://www.youtube.com/watch?v=0flY11lVCwY&t=1s
+        2、草海，碰撞，燃烧
+        3、毛玻璃,马赛克玻璃等
+        4、2d spriteRender常用效果
+            ref:https://blog.csdn.net/ynnmnm/article/details/69791337
+
     
-    
-    学习shader的起点,随便写点笔记在这
+    笔记在这：
 
     一些unity内置函数:
         http://www.cppblog.com/lai3d/archive/2008/10/23/64889.html
