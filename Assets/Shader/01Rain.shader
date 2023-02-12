@@ -1,12 +1,5 @@
 Shader "Unlit/01Rain"
 {   
-    /*
-    一些unity内置函数:
-        http://www.cppblog.com/lai3d/archive/2008/10/23/64889.html
-
-
-        
-    */
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
@@ -49,10 +42,8 @@ Shader "Unlit/01Rain"
 
             v2f vert (appdata v)
             {
-                //对象空间转换为所谓的“裁剪空间” https://docs.unity3d.com/cn/2019.4/Manual/SL-VertexFragmentShaderExamples.html
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                //TRANSFORM_TEX方法比较简单，就是将模型顶点的uv和Tiling、Offset两个变量进行运算，计算出实际显示用的定点uv。
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
@@ -91,7 +82,6 @@ Shader "Unlit/01Rain"
                 
                 float w = i.uv.y * 10;
                 float x = sin(3*w) * pow(sin(w),6)*.45;
-                //一个数学曲线网站 ->https://www.desmos.com/calculator?lang=zh-CN 可以通过这些来查看一些效果.
                 float y = -sin(t + sin(t + sin(t) *.5))*.45;
                 y -= (gv.x -x) *(gv.x -x);
                 float2 dropPos = (gv-float2(x,y))/aspect;
