@@ -1,13 +1,20 @@
 /*
-
+    许愿：
+    1、下雨的窗:
+        ref:https://www.youtube.com/watch?v=EBrAdahFtuo
+            https://www.youtube.com/watch?v=0flY11lVCwY&t=1s
+    2、草海，碰撞，燃烧
+    
+    
     学习shader的起点,随便写点笔记在这
 
     一些unity内置函数:
         http://www.cppblog.com/lai3d/archive/2008/10/23/64889.html
 
     一个数学曲线网站,可以通过这些来查看曲线的图像,根据图像获得想要的效果:
-        https://www.desmos.com/calculator?lang=zh-CN    
-        
+        https://www.desmos.com/calculator?lang=zh-CN
+
+
  */
 Shader "Unlit/00Begin"
 {
