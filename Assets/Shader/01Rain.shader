@@ -51,6 +51,13 @@ Shader "Unlit/01Rain"
                 return o;
             }
 
+            float N21(float2 p)
+            {
+                p = frac(p*float2(123.34,345.45));
+                p += dot(p,p+34.345);
+                return frac(p);
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
                 /*Note:
@@ -58,6 +65,8 @@ Shader "Unlit/01Rain"
                 2、trail为什么会生成一串？      trailPos.y = (frac(trailPos.y * 8) -.5)/8; 类似上述切割小box的部分，先把trail的位置信息乘以一个很大的值，然后在除以一个值，得到一串水珠。
                 3、水珠怎么产生弧度的？
                 4、水滴之下不产生水痕是怎么做的？
+                5、随机数的生成的原理？
+                6、
 
                 时间轴25 :34
                 ref:https://www.youtube.com/watch?v=EBrAdahFtuo
@@ -65,7 +74,7 @@ Shader "Unlit/01Rain"
 
 
                 //Unity内置的时间
-                float t = _Time.y + _T;
+                float t = fmod(_Time.y + _T ,7200); // 7200取余，充值t以免太大有意外情况;
 
                 fixed4 col = 0;
 
@@ -84,12 +93,17 @@ Shader "Unlit/01Rain"
                 */
 
                 float2 gv = frac(uv) -.5; // 把原点放到中心 
-                
+
+                //不同的盒子的水滴速度
+                float2 id = floor(uv);
+                float n = N21(id);
+                t += n;
+
                 //下述都是通过数学网站获取的曲线
                 float w = i.uv.y * 10;
                 float x = sin(3*w) * pow(sin(w),6)*.45;
                 float y = -sin(t + sin(t + sin(t) *.5))*.45;
-                //y -= (gv.x -x) *(gv.x -x);
+                y -= (gv.x -x) *(gv.x -x);
 
                 
                 float2 dropPos = (gv-float2(x,y))/aspect;
@@ -98,7 +112,7 @@ Shader "Unlit/01Rain"
 
                 //length(dropPos) 长度小于.05的为1 大于.03的为1，而中间为插值
                 float drop = smoothstep(.05,.03,length(dropPos));
-/*
+
 
                 //减去之前的增量来取消移动
                 float2 trailPos = (gv-float2(x,t *.25)); 
@@ -110,12 +124,15 @@ Shader "Unlit/01Rain"
                 trail *= smoothstep(0.5,y, gv.y);
 
                 col += trail;
-  */
+  
                 col += drop;
 
                 //辅助线
                 if(gv.x > .48 || gv.y > .49)
                     col = float4(1,0,0,1);
+
+                //col=0; col.rb = id*.1;
+                //col=0; col = N21(id);
                 return col;
             }
             ENDCG

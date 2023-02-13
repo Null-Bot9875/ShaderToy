@@ -7,6 +7,7 @@
         3、毛玻璃,马赛克玻璃等
         4、2d spriteRender常用效果
             ref:https://blog.csdn.net/ynnmnm/article/details/69791337
+        5、恶灵特效模拟
 
     
     笔记在这：
