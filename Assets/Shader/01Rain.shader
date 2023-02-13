@@ -53,7 +53,7 @@ Shader "Unlit/01Rain"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                /*目前还不理解的点
+                /*Note:
                 1、如何切割成多个小的box的？ ->把纹理坐标(uv)乘以一个较大的值（_Size * aspect），再计算出其小数部分（frac(uv)）。这样，纹理坐标空间就被分割成了许多小的坐标系，因此得到了多个水滴的效果。
                 2、trail为什么会生成一串？      trailPos.y = (frac(trailPos.y * 8) -.5)/8; 类似上述切割小box的部分，先把trail的位置信息乘以一个很大的值，然后在除以一个值，得到一串水珠。
                 3、水珠怎么产生弧度的？
@@ -65,7 +65,7 @@ Shader "Unlit/01Rain"
 
 
                 //Unity内置的时间
-                float t = _Time.y*0 + _T;
+                float t = _Time.y + _T;
 
                 fixed4 col = 0;
 
@@ -85,13 +85,18 @@ Shader "Unlit/01Rain"
 
                 float2 gv = frac(uv) -.5; // 把原点放到中心 
                 
+                //下述都是通过数学网站获取的曲线
                 float w = i.uv.y * 10;
                 float x = sin(3*w) * pow(sin(w),6)*.45;
                 float y = -sin(t + sin(t + sin(t) *.5))*.45;
-                y -= (gv.x -x) *(gv.x -x);
+                //y -= (gv.x -x) *(gv.x -x);
+
+                
                 float2 dropPos = (gv-float2(x,y))/aspect;
-                //smoothstep是什么？ -> 线性映射到一个范围内的值 https://blog.csdn.net/woodengm/article/details/125597326
+                //smoothstep是什么？ -> 线性映射到一个范围内的值 https://www.jianshu.com/p/53fe928a0fb6
                 //length是什么？ -> 	Returns the length of the vector v. 返回向量长度
+
+                //length(dropPos) 长度小于.05的为1 大于.03的为1，而中间为插值
                 float drop = smoothstep(.05,.03,length(dropPos));
 /*
 
