@@ -7,6 +7,7 @@ Shader "Unlit/01Rain"
         //Custom
         _Size ("Size",float) = 1
         _T ("Time",float) = 1
+        _Distortion ("Distortion",Range(-5,5)) = 1
     }
     SubShader
     {
@@ -40,7 +41,7 @@ Shader "Unlit/01Rain"
             float4 _MainTex_ST;
 
 
-            float _Size,_T;
+            float _Size,_T,_Distortion;
 
             v2f vert (appdata v)
             {
@@ -66,9 +67,10 @@ Shader "Unlit/01Rain"
                 3、水珠怎么产生弧度的？
                 4、水滴之下不产生水痕是怎么做的？
                 5、随机数的生成的原理？
-                6、
+                6、水痕中的0.5和0.4是怎么来的？
+                7、图片和水是怎么结合起来的？
+                8、怎么让水失真的？
 
-                时间轴25 :34
                 ref:https://www.youtube.com/watch?v=EBrAdahFtuo
                 */
 
@@ -97,11 +99,13 @@ Shader "Unlit/01Rain"
                 //不同的盒子的水滴速度
                 float2 id = floor(uv);
                 float n = N21(id);
-                t += n;
+                t += n * 3.14 *2; //一个周期是2Π，为了在一个周期内随机，需要乘以一个2Π
 
                 //下述都是通过数学网站获取的曲线
                 float w = i.uv.y * 10;
-                float x = sin(3*w) * pow(sin(w),6)*.45;
+                float x = (n-.5)*.8;  // -0.4 ~ 0.4
+                x+= (.4 - abs(x)) * sin(3*w) * pow(sin(w),6)*.45; //靠近边缘不会扭动
+
                 float y = -sin(t + sin(t + sin(t) *.5))*.45;
                 y -= (gv.x -x) *(gv.x -x);
 
@@ -119,20 +123,25 @@ Shader "Unlit/01Rain"
                 trailPos.y = (frac(trailPos.y * 8) -.5)/8;
                 float trail = smoothstep(.03,.01,length(trailPos));
                 //水滴之下不产生水痕
-                trail *= smoothstep(-.05,.05, dropPos.y);
+                float fogTrail = smoothstep(-.05,.05, dropPos.y);
                 //水痕消失
-                trail *= smoothstep(0.5,y, gv.y);
+                fogTrail *= smoothstep(0.5,y, gv.y);
+                trail *= fogTrail;
+                fogTrail *= smoothstep(.05,.04,abs(dropPos.x));
 
-                col += trail;
-  
+
+                col += fogTrail * .5;
+                col += trail;  
                 col += drop;
 
                 //辅助线
-                if(gv.x > .48 || gv.y > .49)
-                    col = float4(1,0,0,1);
+                //if(gv.x > .48 || gv.y > .49) col = float4(1,0,0,1);
 
                 //col=0; col.rb = id*.1;
                 //col=0; col = N21(id);
+
+                float2 offset = drop*dropPos + trail*trailPos;
+                col = tex2D(_MainTex,i.uv + offset*_Distortion);
                 return col;
             }
             ENDCG
