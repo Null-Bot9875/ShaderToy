@@ -64,14 +64,14 @@ Shader "Unlit/01Rain"
                 /*Note:
                 1、如何切割成多个小的box的？ ->把纹理坐标(uv)乘以一个较大的值（_Size * aspect），再计算出其小数部分（frac(uv)）。这样，纹理坐标空间就被分割成了许多小的坐标系，因此得到了多个水滴的效果。
                 2、trail为什么会生成一串？      trailPos.y = (frac(trailPos.y * 8) -.5)/8; 类似上述切割小box的部分，先把trail的位置信息乘以一个很大的值，然后在除以一个值，得到一串水珠。
-                3、水珠怎么产生弧度的？
-                4、水滴之下不产生水痕是怎么做的？
-                5、随机数的生成的原理？
-                6、水痕中的0.5和0.4是怎么来的？
-                7、图片和水是怎么结合起来的？
-                8、怎么让水失真的？
+                3、水珠怎么产生弧度的？ 抛物线
+                4、水滴之下不产生水痕是怎么做的？ 水珠半径以下不生成
+                5、随机数的生成的原理？ 可能是噪声算法
+                6、图片和水是怎么结合起来的？ 修改uv，但是不知道为什么修改uv可以
 
-                ref:https://www.youtube.com/watch?v=EBrAdahFtuo
+                ref:
+                    https://www.youtube.com/watch?v=EBrAdahFtuo
+                    https://www.youtube.com/watch?v=0flY11lVCwY&t=1s
                 */
 
 
@@ -114,7 +114,7 @@ Shader "Unlit/01Rain"
                 //smoothstep是什么？ -> 线性映射到一个范围内的值 https://www.jianshu.com/p/53fe928a0fb6
                 //length是什么？ -> 	Returns the length of the vector v. 返回向量长度
 
-                //length(dropPos) 长度小于.05的为1 大于.03的为1，而中间为插值
+                //length(dropPos) 长度小于.05的为1 大于.03的为0，而中间为插值
                 float drop = smoothstep(.05,.03,length(dropPos));
 
 
@@ -129,7 +129,7 @@ Shader "Unlit/01Rain"
                 trail *= fogTrail;
                 fogTrail *= smoothstep(.05,.04,abs(dropPos.x));
 
-
+                //辅助观看，最后还是通过uv来修改透明的
                 col += fogTrail * .5;
                 col += trail;  
                 col += drop;
@@ -141,7 +141,7 @@ Shader "Unlit/01Rain"
                 //col=0; col = N21(id);
 
                 float2 offset = drop*dropPos + trail*trailPos;
-                col = tex2D(_MainTex,i.uv + offset*_Distortion);
+                col = tex2D(_MainTex,i.uv + offset * _Distortion);
                 return col;
             }
             ENDCG

@@ -8,6 +8,8 @@
         4、2d spriteRender常用效果
             ref:https://blog.csdn.net/ynnmnm/article/details/69791337
         5、恶灵特效模拟
+        6、消融效果
+            https://imgtec.eetrend.com/blog/2020/100052999.html
 
     
     笔记在这：
