@@ -6,6 +6,7 @@
         2、草海，碰撞，燃烧
         3、毛玻璃,马赛克玻璃等
             https://blog.csdn.net/weixin_45023328/article/details/115448067
+            https://blog.csdn.net/poem_qianmo/article/details/51871531#:~:text=%E9%AB%98%E6%96%AF%E6%A8%A1%E7%B3%8A%E7%9A%84%E5%85%B7%E4%BD%93%E6%93%8D,%E4%B8%AD%E5%BF%83%E5%83%8F%E7%B4%A0%E7%82%B9%E7%9A%84%E5%80%BC%E3%80%82
         4、2d spriteRender常用效果
             https://blog.csdn.net/ynnmnm/article/details/69791337
         5、恶灵特效模拟

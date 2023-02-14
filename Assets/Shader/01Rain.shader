@@ -135,7 +135,7 @@ Shader "Unlit/01Rain"
                 col += drop;
 
                 //辅助线
-                //if(gv.x > .48 || gv.y > .49) col = float4(1,0,0,1);
+                if(gv.x > .48 || gv.y > .49) col = float4(1,0,0,1);
 
                 //col=0; col.rb = id*.1;
                 //col=0; col = N21(id);
