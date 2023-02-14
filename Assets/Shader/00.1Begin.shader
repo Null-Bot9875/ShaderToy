@@ -5,14 +5,19 @@
                 https://www.youtube.com/watch?v=0flY11lVCwY&t=1s
         2、草海，碰撞，燃烧
         3、毛玻璃,马赛克玻璃等
+            https://blog.csdn.net/weixin_45023328/article/details/115448067
         4、2d spriteRender常用效果
-            ref:https://blog.csdn.net/ynnmnm/article/details/69791337
+            https://blog.csdn.net/ynnmnm/article/details/69791337
         5、恶灵特效模拟
         6、消融效果
             https://imgtec.eetrend.com/blog/2020/100052999.html
+        7、扭曲效果，水珠效果和一些火的效果都可以这么实现
+            https://blog.csdn.net/linjf520/article/details/104962646
 
     
     笔记在这：
+    begin:
+        https://docs.unity3d.com/cn/2019.4/Manual/SL-VertexFragmentShaderExamples.html
 
     一些unity内置函数:
         http://www.cppblog.com/lai3d/archive/2008/10/23/64889.html
@@ -61,7 +66,7 @@ Shader "Unlit/00Begin"
 
             v2f vert (appdata v)
             {
-                //对象空间转换为所谓的“裁剪空间” https://docs.unity3d.com/cn/2019.4/Manual/SL-VertexFragmentShaderExamples.html
+                //对象空间转换为所谓的“裁剪空间” 
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 //TRANSFORM_TEX方法比较简单，就是将模型顶点的uv和Tiling、Offset两个变量进行运算，计算出实际显示用的定点uv。

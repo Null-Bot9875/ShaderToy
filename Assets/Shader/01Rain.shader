@@ -104,7 +104,7 @@ Shader "Unlit/01Rain"
                 //下述都是通过数学网站获取的曲线
                 float w = i.uv.y * 10;
                 float x = (n-.5)*.8;  // -0.4 ~ 0.4
-                x+= (.4 - abs(x)) * sin(3*w) * pow(sin(w),6)*.45; //靠近边缘不会扭动
+                x += (.4 - abs(x)) * sin(3*w) * pow(sin(w),6)*.45; //靠近边缘不会扭动
 
                 float y = -sin(t + sin(t + sin(t) *.5))*.45;
                 y -= (gv.x -x) *(gv.x -x);
@@ -140,8 +140,12 @@ Shader "Unlit/01Rain"
                 //col=0; col.rb = id*.1;
                 //col=0; col = N21(id);
 
+
+                //最不能理解的地方
                 float2 offset = drop*dropPos + trail*trailPos;
                 col = tex2D(_MainTex,i.uv + offset * _Distortion);
+
+                //col=0; col += (offset * _Distortion).x;col += (offset * _Distortion).y;
                 return col;
             }
             ENDCG
